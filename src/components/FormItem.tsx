@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
 import { Control, Controller, Path } from "react-hook-form";
-type FormItemProps<FormSchema extends Record<string, FormValue>> = {
-  form: Obj<Path<FormSchema>>;
-  control: Control<FormSchema>;
+type FormItemProps<Schema extends Record<Path<Schema>, FormValue>> = {
+  form: Obj<Path<Schema>>;
+  control: Control<Schema>;
 };
-export const FormItem = <FormSchema extends Record<string, FormValue>>(props: FormItemProps<FormSchema>) => {
+
+export const FormItem = <Schema extends Record<Path<Schema>, FormValue>>(props: FormItemProps<Schema>) => {
   const { form, control } = props;
   const { formKey, label } = form;
   return (
