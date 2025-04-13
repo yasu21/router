@@ -1,10 +1,11 @@
 import { ZodType } from "zod";
 
 declare global {
-  type FormValue = string | boolean;
-  type ZodValidation = ZodType<FormValue, any, FormValue>;
-  type FormValuesInfe<T extends readonly { formKey: string }[]> = { [K in T[number]["formKey"]]: FormValue };
+  type ZodValidation = ZodType<string | boolean, any, string | boolean>;
   type SchemaInfe<T extends readonly { formKey: string }[]> = { [K in T[number]["formKey"]]: ZodValidation };
+  type KeyValueInfe<T> = {
+    [K in keyof T]: { key: K; value: T[K] };
+  }[keyof T];
 
   type Obj<K extends string> = {
     label: string;

@@ -10,12 +10,6 @@ export const useForms = <K extends string>(props: UseForms<K>) => {
   const { readOnlyForms } = props;
   const [forms, setForms] = useState(() => readOnlyForms.map((item) => ({ ...item })));
 
-  // 初期値を取り出す
-  type FormValues = FormValuesInfe<typeof readOnlyForms>;
-  const defaultValues = useMemo(() => {
-    return Object.fromEntries(readOnlyForms.map((form) => [form.formKey, form.defaultValue])) as FormValues;
-  }, [readOnlyForms]);
-
   // スキーマを取り出し、useStateに
   type Schema = SchemaInfe<typeof readOnlyForms>;
   const [schema, setSchema] = useState<Schema>(() => {
@@ -28,6 +22,11 @@ export const useForms = <K extends string>(props: UseForms<K>) => {
     return { schemaObject };
   }, [schema]);
   type SchemaType = z.infer<typeof schemaObject>;
+
+  // 初期値を取り出す
+  const defaultValues = useMemo(() => {
+    return Object.fromEntries(readOnlyForms.map((form) => [form.formKey, form.defaultValue])) as SchemaType;
+  }, [readOnlyForms]);
 
   const { control, setValue, getValues, handleSubmit, formState, reset } = useForm<SchemaType>({
     mode: "onChange",
@@ -53,5 +52,6 @@ export const useForms = <K extends string>(props: UseForms<K>) => {
     getValues,
     handleSubmit,
     reset,
+    SchemaType: null as unknown as SchemaType,
   };
 };
